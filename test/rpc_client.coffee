@@ -1,19 +1,31 @@
 RippleRpcClient = require "#{__dirname}+/../"
 assert = require 'assert'
 
+TEST_ACCOUNT = 'r4EwBWxrx5HxYRyisfGzMto3AT8FZiYdWk'
+
+rpc_client = new RippleRpcClient 'http://s1.ripple.com:51234'
+
 describe 'Ripple RPC Client', ->
 
   it 'should get account info', (callback) ->
   
-    rpc_client = new RippleRpcClient 'http://s1.ripple.com:51234'
-
     account_info_params =
-      account: "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh"
+      account: TEST_ACCOUNT
 
     rpc_client.call "account_info", account_info_params, (err, resp) ->
-
-      gravatar_url = "http://www.gravatar.com/avatar/981e67963b83c414c90f424751edc03d"
-      assert.strictEqual resp.account_data.urlgravatar, gravatar_url
-      assert.strictEqual resp.account_data.RegularKey, "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh"
+      console.log err, resp
+      assert.strictEqual resp.account_data.LedgerEntryType, "AccountRoot"
       callback()
-  
+
+  it 'should get account transactions', (callback) ->
+
+    account_tx_params =
+      account: TEST_ACCOUNT
+      ledger_index_min: 1000
+
+    rpc_client.call "account_tx", account_tx_params, (err, resp) ->
+      assert.strictEqual resp.status, 'success'
+      assert resp.transactions.length > 0
+      console.log err, resp
+      callback()
+
