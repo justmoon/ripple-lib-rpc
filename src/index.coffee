@@ -16,6 +16,5 @@ class RippleRpcClient
         else
           callback null, response.body.result
 
-
 module.exports = RippleRpcClient
 
