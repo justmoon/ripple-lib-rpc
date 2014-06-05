@@ -13,7 +13,6 @@ describe 'Ripple RPC Client', ->
       account: TEST_ACCOUNT
 
     rpc_client.call "account_info", account_info_params, (err, resp) ->
-      console.log err, resp
       assert.strictEqual resp.account_data.LedgerEntryType, "AccountRoot"
       callback()
 
@@ -26,6 +25,5 @@ describe 'Ripple RPC Client', ->
     rpc_client.call "account_tx", account_tx_params, (err, resp) ->
       assert.strictEqual resp.status, 'success'
       assert resp.transactions.length > 0
-      console.log err, resp
       callback()
 
